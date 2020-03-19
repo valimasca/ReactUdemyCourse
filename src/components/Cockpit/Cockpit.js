@@ -1,19 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import classes from './Cockpit.css';
+import AuthContext from '../../context/auth-context';
 
 const cockpit = (props) => {
-    useEffect(() => {
-      console.log('[Cockpit.js] useEffect');
-      //Http request...
-      //const timer = 
-      setTimeout(() => {
-        alert('Saved data to Cloud!');
-      }, 1000);
-      return () => {
-        //clearTimeout(timer);
-        console.log('[Cockpit.js] cleanup work in useEffect');
-      };
-    }, []); // this means that useEffect is only triggerd when a person is changed [props.persons]
+  const toogleBtnRef = useRef(null);
+  const authContext = useContext(AuthContext);
+
+
+  //useEffect is only called after the jsx is returned
+useEffect(() => {
+  console.log('[Cockpit.js] useEffect');
+  //Http request...
+  //const timer = 
+  // setTimeout(() => {
+  //   alert('Saved data to Cloud!');
+  // }, 1000);
+  toogleBtnRef.current.click();
+
+  return () => {
+    //clearTimeout(timer);
+    console.log('[Cockpit.js] cleanup work in useEffect');
+  };
+}, []); // this means that useEffect is only triggerd when a person is changed [props.persons]
 // if you want just to run componentDidMount you pass an empty array instead of what we have on line 8
     
 useEffect(() => {
@@ -42,10 +50,11 @@ let assignedClasses = [];
         <div className={classes.Cockpit}>
             <h1>{props.title}</h1>
             <p className={assignedClasses.join(' ')}>This is really working</p>
-            <button className={btnClass} alt={props.showPersons} 
+            <button ref={toogleBtnRef} className={btnClass} alt={props.showPersons} 
             onClick={props.clicked}>
             Toogle Name
             </button> 
+           <button onClick={authContext.login}>Log In</button>
         </div>
         
     );
